@@ -22,5 +22,12 @@ class UsersTableSeeder extends Seeder
     //$role = Role::find(1);
     $user->roles()->attach(1);
     $user->roles()->attach(2);
+
+    $user = User::create([
+    	'name' => 'Okoratu',
+    	'email' => 'okoratu@web.de',
+    	'password' => bcrypt('secret'),
+    ]);
+    $user->roles()->attach(3);
     }
 }

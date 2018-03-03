@@ -21,4 +21,6 @@ Route::get('/register', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/role/{id}', 'RoleController@show')->name('role');
+Route::get('/role/{id}', 'RoleController@show')->name('role.view');
+Route::get('/roles/create', 'RoleController@showCreationForm')->name('role.creationform');
+Route::post('/roles/create', 'RoleController@create')->name('role.create');

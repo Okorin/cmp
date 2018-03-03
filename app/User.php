@@ -7,8 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    const DEFAULT_COLOR = "00000";
+    const DEFAULT_TITLE = " ";
 
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -45,9 +47,50 @@ class User extends Authenticatable
 
     /**
      * Gets the color the user should have
+     *
+     * @return string(6) - the user's color
      */
     public function getColor() {
-        return (!is_null($this->color_override) ? $this->color_override : $this->getHighestRole()->color);
+       if (!is_null($this->color_override))
+        { 
+            return $this->color_override;
+        }  else {
+            if ($this->getHighestRole()) {
+                return $this->getHighestRole()->color;
+            } else { 
+                return User::DEFAULT_COLOR; 
+            }
+        }
     }
 
+    /**
+     * Gets the title the user has
+     *
+     * @return string - the user's title
+     */
+
+    public function getTitle() {
+       if (!is_null($this->title_override))
+        { 
+            return $this->title_override;
+        }  else {
+            if ($this->getHighestRole()) {
+                return $this->getHighestRole()->title;
+            } else { 
+                return User::DEFAULT_TITLE; 
+            }
+        }
+    }
+
+    public function isAdmin() {
+        return $this->roles()->find(Role::ROLES["Admin"]) ? true : false;
+    }
+
+    public function isMentor() {
+        return $this->roles()->find(Role::ROLES["Mentor"]) ? true : false;
+    }
+
+    public function isOrganizer() {
+        return $this->roles()->find(Role::ROLES["Organizer"]) ? true : false;
+    }
 }
