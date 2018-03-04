@@ -26,7 +26,7 @@ class RolePolicy
 
     public function view(User $user, Role $role)
     {
-        return $role->visible;
+        return (boolean) $role->visible;
     }
 
     /**
@@ -50,7 +50,12 @@ class RolePolicy
      */
     public function update(User $user, Role $role)
     {
-        return $user->isOrganizer() ? true : false;
+        // Role is given, check if user can edit this Role
+        if ($role->visible === 1) 
+        {
+            return $user->isOrganizer() ? true : false;
+        }
+        return false;
     }
 
     /**
@@ -60,8 +65,17 @@ class RolePolicy
      * @param  \App\Role  $role
      * @return mixed
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Role $role )
     {
-        //
+
     }
+
+    public function manage(User $user) 
+    {
+        return ( $this->create($user) ||
+                 $this->update($user, new Role) ||
+                 $this->delete($user, new Role)
+                );
+    }
+
 }

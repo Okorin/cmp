@@ -14,4 +14,5 @@
 		</div>
 	@endforeach
 	</div>
+	<a href="{{ route('role.index') }}">back to listing</a>
 @endsection

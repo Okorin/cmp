@@ -23,7 +23,7 @@
                   <div class="col">
                       <span class="text-secondary">Don't have an account?</span> <a href="{{ url('/register') }}">Sign up</a>
                   </div>
-                  @if ($errors->any())
+                  @if (false !== isset($errors) )
                   @foreach ($errors->all() as $error)
                       <span class="help-block">
                           <strong>{{ $error }}</strong>

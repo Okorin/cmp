@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    const DEFAULT_COLOR = "00000";
+    const DEFAULT_COLOR = "000000";
     const DEFAULT_TITLE = " ";
 
     use Notifiable;
@@ -82,15 +82,22 @@ class User extends Authenticatable
         }
     }
 
+    /*****************************************************************************
+     * Role checks
+     */
     public function isAdmin() {
-        return $this->roles()->find(Role::ROLES["Admin"]) ? true : false;
+        return ($this->roles()->find(Role::ROLES["Admin"]) !== NULL) ? true : false;
     }
 
     public function isMentor() {
-        return $this->roles()->find(Role::ROLES["Mentor"]) ? true : false;
+        return ($this->roles()->find(Role::ROLES["Mentor"]) !== NULL) ? true : false;
     }
 
     public function isOrganizer() {
-        return $this->roles()->find(Role::ROLES["Organizer"]) ? true : false;
+        return ($this->roles()->find(Role::ROLES["Organizer"]) !== NULL) ? true : false;
+    }
+
+    public function isMentee() {
+        return ($this->roles()->find(Role::ROLES["Mentee"]) !== NULL) ? true : false;
     }
 }

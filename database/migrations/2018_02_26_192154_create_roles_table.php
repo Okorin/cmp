@@ -22,6 +22,7 @@ class CreateRolesTable extends Migration
             $table->smallInteger('hierarchy')->unique();       // determines which role takes precedence for visible user attributes
             $table->string('color', 6);                        // color of the role
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

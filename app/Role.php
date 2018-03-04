@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
+	use SoftDeletes;
     const ROLES = ['Admin' => 1,
                    'Organizer' => 2,
                    'Mentor' => 3,
