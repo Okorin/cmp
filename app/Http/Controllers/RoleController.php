@@ -26,13 +26,13 @@ class RoleController extends Controller
 									]);
 	}
 
-	public function showCreationForm() 
+	public function create() 
 	{
 		$this->authorize('create', Role::class);
 		return view('role.create');
 	}
 
-	public function create(Request $request) 
+	public function store(Request $request) 
 	{
 		$this->authorize('create', Role::class);
 		$request->validate([
@@ -70,7 +70,7 @@ class RoleController extends Controller
 	}
 
 // Returns the update form
-	public function showUpdateForm($id) 
+	public function edit($id) 
 	{
 		$role = Role::findOrFail($id);
 		$this->authorize('update', $role);

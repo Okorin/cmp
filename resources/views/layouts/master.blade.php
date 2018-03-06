@@ -3,7 +3,7 @@
   <head>
     @include('layouts.css')
 
-    <title> @yield('title', 'Home') &middot; osu!cmp</title>
+    <title>@yield('title', 'home') &middot; osu!cmp</title>
   </head>
 <body>
 

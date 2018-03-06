@@ -11,31 +11,28 @@
               <a class="nav-link" href="#">events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">schedule</a>
+              <a class="nav-link" href="{{ route('cycle.index') }}">schedule</a>
             </li>
-              @can('create', App\Role::class)
+              @if(Auth::check())
+              @if(Auth::user()->isOrganizer())
               <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                role management
+                organization
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('role.index') }}">overview</a>
+                <a class="dropdown-item" href="{{ route('role.index') }}">all roles</a>
+              @can('create', App\Role::class)
+                <a class="dropdown-item" href="{{ route('role.create') }}">new visible role</a>
+              @endcan
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('role.create') }}">create</a>
+                <a class="dropdown-item" href="{{ route('cycle.index') }}">all cycles</a>
+                @can('create', App\Cycle::class)
+                <a class="dropdown-item" href="{{ route('cycle.create') }}">new cycle</a>
+                @endcan
               </div>
             </li>
-             @endcan
-             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                organisation
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
+            @endif
+            @endif
           </ul>
         </div>
       </nav>
