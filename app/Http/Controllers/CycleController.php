@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cycle;
+use Carbon\Carbon;
 
 class CycleController extends Controller
 {
@@ -41,7 +42,32 @@ class CycleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Cycle::class);
+        $request->validate([
+            'mentorSignupsStart' => 'required|date_format:Y-m-d',
+            'mentorSignupsEnd' => 'required|date_format:Y-m-d',
+            'menteeSignupsStart' => 'required|date_format:Y-m-d',
+            'menteeSignupsEnd' => 'required|date_format:Y-m-d',
+            'cycleStart' => 'required|date_format:Y-m-d',
+            'cycleEnd' => 'required|date_format:Y-m-d',
+        ]);
+
+        // insert more validation of input data
+
+        $cycle = Cycle::create([
+            'starts_at' => $request->cycleStart,
+            'ends_at' => $request->cycleEnd,
+            'mentor_signups_start_at' => $request->mentorSignupsStart,
+            'mentor_signups_end_at' => $request->mentorSignupsEnd,
+            'mentee_signups_start_at' => $request->menteeSignupsStart,
+            'mentee_signups_end_at' => $request->menteeSignupsEnd,
+        ]);
+
+        if ($cycle) 
+        {
+            return back();
+        }
+
     }
 
     /**

@@ -46,15 +46,15 @@ Route::name('cycle.')->group(function() {
 	
     // show
     Route::get('/cycles',              'CycleController@index') ->name('index');
-	Route::get('/cycle/{id}',          'CycleController@show')  ->name('show');
+    Route::get('/cycle/{id}',          'CycleController@show')  ->name('show');
 
     // manage view
-	Route::get('/cycles/create',       'CycleController@create')->name('create');
-	Route::get('/cycles/update/{id}',  'CycleController@edit')  ->name('edit');
+    Route::get('/cycles/create',       'CycleController@create')->name('create');
+    Route::get('/cycles/update/{id}',  'CycleController@edit')  ->name('edit');
 
     // manage edit
-	Route::post('/cycles/update/{id}', 'CycleController@update')->name('update');
-	Route::post('/cycles/create',      'CycleController@store') ->name('store');
+    Route::post('/cycles/update/{id}', 'CycleController@update')->name('update');
+    Route::post('/cycles/create',      'CycleController@store') ->name('store');
 });
 
 // Stub view for users

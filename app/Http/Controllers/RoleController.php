@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use Validator;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
@@ -55,12 +57,29 @@ class RoleController extends Controller
 	{
 		$role = Role::findOrFail($id);
 		$this->authorize('update', $role);
-		$request->validate([
-			'name' => 'required',
-			'description' => 'required',
-			'color' => 'required|max:6',
-			'hierarchy' => 'required',
+		$validator = Validator::make($request->all(), [
+			'name' => [
+				'required',
+				Rule::unique('roles')->ignore($role->id),
+			],
+			'description' => [
+				'required',
+			],
+			'color' => [
+				'required',
+				'max:6',
+			],
+			'hierarchy' => [
+				'required',
+				'numeric',
+				Rule::unique('roles')->ignore($role->id),
+			],
 		]);
+		if ($validator->fails()) {
+			return back()->withErrors($validator)
+						 ->withInput();
+		}
+
 		$role->name         = e($request->name);
 		$role->description  = e($request->description);
 		$role->color 		= e($request->color);

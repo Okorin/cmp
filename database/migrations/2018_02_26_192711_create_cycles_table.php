@@ -17,7 +17,7 @@ class CreateCyclesTable extends Migration
             $table->increments('id');
             $table->datetime('starts_at');
             $table->datetime('ends_at');
-            $table->datetime('mentor_singups_start_at');
+            $table->datetime('mentor_signups_start_at');
             $table->datetime('mentor_signups_end_at');
             $table->datetime('mentee_signups_start_at');
             $table->datetime('mentee_signups_end_at');
