@@ -43,24 +43,17 @@ class CycleController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Cycle::class);
-        $request->validate([
-            'mentorSignupsStart' => 'required|date_format:Y-m-d',
-            'mentorSignupsEnd' => 'required|date_format:Y-m-d',
-            'menteeSignupsStart' => 'required|date_format:Y-m-d',
-            'menteeSignupsEnd' => 'required|date_format:Y-m-d',
-            'cycleStart' => 'required|date_format:Y-m-d',
-            'cycleEnd' => 'required|date_format:Y-m-d',
-        ]);
+        $this->doBasicFormCheck($request);
 
         // insert more validation of input data
 
         $cycle = Cycle::create([
-            'starts_at' => $request->cycleStart,
-            'ends_at' => $request->cycleEnd,
-            'mentor_signups_start_at' => $request->mentorSignupsStart,
-            'mentor_signups_end_at' => $request->mentorSignupsEnd,
-            'mentee_signups_start_at' => $request->menteeSignupsStart,
-            'mentee_signups_end_at' => $request->menteeSignupsEnd,
+            'starts_at' => e($request->cycleStart),
+            'ends_at' => e($request->cycleEnd),
+            'mentor_signups_start_at' => e($request->mentorSignupsStart),
+            'mentor_signups_end_at'   => e($request->mentorSignupsEnd),
+            'mentee_signups_start_at' => e($request->menteeSignupsStart),
+            'mentee_signups_end_at'   => e($request->menteeSignupsEnd),
         ]);
 
         if ($cycle) 
@@ -93,7 +86,7 @@ class CycleController extends Controller
     {
         $cycle = Cycle::findOrFail($id);
         $this->authorize('update', $cycle);
-        return view('cycle.edit')->with(['$cycle' => $cycle]);
+        return view('cycle.edit')->with(['cycle' => $cycle]);
     }
 
     /**
@@ -105,8 +98,26 @@ class CycleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // retrieve or fail
         $cycle = Cycle::findOrFail($id);
+
+        // auth check before proceeding
         $this->authorize('update', $cycle);
+
+        // basic form validation
+        $this->doBasicFormCheck($request);
+
+        // actually update the entry
+        $cycle->mentor_signups_start_at = e($request->mentorSignupsStart);
+        $cycle->mentor_signups_end_at = e($request->mentorSignupsStart);
+        $cycle->mentee_signups_start_at = e($request->menteeSignupsStart);
+        $cycle->mentee_signups_end_at = e($request->menteeSignupsEnd);
+        $cycle->starts_at = e($request->cycleStart);
+        $cycle->ends_at = e($request->cycleEnd);
+
+        // save and go back
+        $cycle->save();
+        return back();
     }
 
     /**
@@ -118,5 +129,16 @@ class CycleController extends Controller
     public function destroy($id)
     {
         $this->authorize('delete', $cycle);
+    }
+
+    protected function doBasicFormCheck(Request $request) {
+        $request->validate([
+            'mentorSignupsStart' => 'required|date_format:Y-m-d',
+            'mentorSignupsEnd' => 'required|date_format:Y-m-d',
+            'menteeSignupsStart' => 'required|date_format:Y-m-d',
+            'menteeSignupsEnd' => 'required|date_format:Y-m-d',
+            'cycleStart' => 'required|date_format:Y-m-d',
+            'cycleEnd' => 'required|date_format:Y-m-d',
+        ]);
     }
 }

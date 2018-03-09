@@ -15,6 +15,7 @@ class CreateGamemodesTable extends Migration
     {
         Schema::create('gamemodes', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name', 14)->unique();
             $table->timestamps();
         });
     }

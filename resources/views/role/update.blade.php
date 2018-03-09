@@ -25,14 +25,5 @@
 	      <button type="submit" class="btn btn-primary">update</button>
 	    </div>
 	</form>
-@if ($errors->any())
-    <div class="alert alert-danger">
-    	The following Validation errors have occured:
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    @include('layouts.error')
 @endsection
