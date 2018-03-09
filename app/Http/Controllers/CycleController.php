@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cycle;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CycleController extends Controller
 {
@@ -107,9 +108,19 @@ class CycleController extends Controller
         // basic form validation
         $this->doBasicFormCheck($request);
 
+        // Start a DB Transaction because all cycles might need an update
+        DB::beginTransaction();
+
+        if ($request->active === 'yes') { 
+
+            Cycle::where('id', '<>', '0')->update(['active' => false]);
+            $cycle->active = true;
+
+        }
         // actually update the entry
+        $cycle->name = e($request->cycleName);
         $cycle->mentor_signups_start_at = e($request->mentorSignupsStart);
-        $cycle->mentor_signups_end_at = e($request->mentorSignupsStart);
+        $cycle->mentor_signups_end_at = e($request->mentorSignupsEnd);
         $cycle->mentee_signups_start_at = e($request->menteeSignupsStart);
         $cycle->mentee_signups_end_at = e($request->menteeSignupsEnd);
         $cycle->starts_at = e($request->cycleStart);
@@ -117,6 +128,9 @@ class CycleController extends Controller
 
         // save and go back
         $cycle->save();
+
+        DB::commit();
+
         return back();
     }
 
@@ -141,4 +155,5 @@ class CycleController extends Controller
             'cycleEnd' => 'required|date_format:Y-m-d',
         ]);
     }
+
 }

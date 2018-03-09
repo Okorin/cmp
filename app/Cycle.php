@@ -28,5 +28,8 @@ class Cycle extends Model
         'mentor_signups_end_at',
         'mentee_signups_start_at',
         'mentee_signups_end_at',
+        'name',
+        'active',
     ];
+
 }

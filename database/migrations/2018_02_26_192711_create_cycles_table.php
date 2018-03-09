@@ -21,6 +21,8 @@ class CreateCyclesTable extends Migration
             $table->datetime('mentor_signups_end_at');
             $table->datetime('mentee_signups_start_at');
             $table->datetime('mentee_signups_end_at');
+            $table->string('name', 25)->nullable();
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }
