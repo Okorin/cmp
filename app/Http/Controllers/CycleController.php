@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cycle;
+use App\Participant;
+use App\Gamemode;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -73,8 +75,13 @@ class CycleController extends Controller
     public function show($id)
     {
         $cycle = Cycle::findOrFail($id);
+        $participants = Participant::where('cycle_id', '=', $id)->get();
+        $modeparticipants = $participants->groupBy("gamemode_id")->reverse();
+        $gamemodes = Gamemode::all();
         // Insert some logic to select all participants on a cycle
-        return view('cycle.show')->with(['cycle' => $cycle]);
+        return view('cycle.show')->with(['cycle' => $cycle,
+                                         'modeparticipants' => $modeparticipants,
+                                         'gamemodes' => $gamemodes]);
     }
 
     /**

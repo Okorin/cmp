@@ -57,7 +57,7 @@ Route::name('cycle.')->group(function() {
     Route::post('/cycles/create',      'CycleController@store') ->name('store');
 });
 
-// Stub view for users
-Route::get('/user', function () {
-    return view('user.show');
+
+Route::name('user.')->group(function() {
+    Route::get('/user/{id}',            'UserController@show')->name('show');
 });

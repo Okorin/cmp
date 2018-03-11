@@ -14,6 +14,7 @@ class CreateParticipantsTable extends Migration
     public function up()
     {
         Schema::create('participants', function (Blueprint $table) {
+            $table->increments('id');
             // fields
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
@@ -31,7 +32,7 @@ class CreateParticipantsTable extends Migration
                                           ->on('cycles');
 
             // Any combination describes a User entity uniquely
-            $table->primary(['user_id', 'role_id', 'gamemode_id', 'cycle_id']);
+            //$table->primary(['user_id', 'role_id', 'gamemode_id', 'cycle_id']);
             $table->timestamps();
         });
     }

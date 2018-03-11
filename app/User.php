@@ -17,7 +17,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 
+        'email', 
+        'password',
     ];
 
     /**
@@ -26,7 +28,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'osu_token', 'discord_id'
+        'password', 
+        'remember_token', 
+        'osu_token', 
+        'discord_id',
     ];
 
     /**
@@ -38,14 +43,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    /**
-     * Gets the gets the highest relevant hierarchy for a user
-     */
-    public function getHighestRole() {
-        return $this->roles()->orderBy('hierarchy')->first();
+    public function participants() {
+        return $this->hasMany(Participant::class);
     }
 
     /**
+     * Gets the gets the highest relevant hierarchy for a user
+     */
+    public function scopeHighestRole() {
+        return $this->roles()->orderBy('hierarchy')->first();
+    }
+
+    /*********************************************************************************
      * Gets the color the user should have
      *
      * @return string(6) - the user's color
@@ -55,8 +64,8 @@ class User extends Authenticatable
         { 
             return $this->color_override;
         }  else {
-            if ($this->getHighestRole()) {
-                return $this->getHighestRole()->color;
+            if ($this->highestRole()) {
+                return $this->highestRole()->color;
             } else { 
                 return User::DEFAULT_COLOR; 
             }
@@ -74,8 +83,8 @@ class User extends Authenticatable
         { 
             return $this->title_override;
         }  else {
-            if ($this->getHighestRole()) {
-                return $this->getHighestRole()->title;
+            if ($this->highestRole()) {
+                return $this->highestRole()->name;
             } else { 
                 return User::DEFAULT_TITLE; 
             }

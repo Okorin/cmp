@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Gamemode;
 
 class UserController extends Controller
 {
@@ -45,7 +47,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail(e($id));
+        $gamemodes = Gamemode::all();
+        $participants = $user->participants()->orderBy('cycle_id', 'asc')
+                                                       ->get();
+        $modeparticipants = $participants->groupBy('gamemode_id')->reverse();
+        return view('user.show')->with(['user' => $user,
+                                        'modeparticipants' => $modeparticipants,
+                                        'gamemodes' => $gamemodes]);
     }
 
     /**

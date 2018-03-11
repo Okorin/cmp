@@ -14,7 +14,7 @@
                 <th scope="col">Mentee Signups</th>
                 <th scope="col">Cycle Duration</th>
                 @can('update', new App\Cycle)
-                <th scope="col">#</th>
+                <th scope="col">Controls</th>
                 @endcan
             </tr>
         </thead>
@@ -27,9 +27,9 @@
             >
                 <td>{{ $cycle->id }}</td>
                 <td>{{ $cycle->name }}</td>
-		        <td>{{ $cycle->starts_at->format('d.m.Y') }} - {{ $cycle->ends_at->format('d.m.Y') }}</td>
 		        <td>{{ $cycle->mentor_signups_start_at->format('d.m.Y') }} - {{ $cycle->mentor_signups_end_at->format('d.m.Y') }}</td>
 		        <td>{{ $cycle->mentee_signups_start_at->format('d.m.Y') }} - {{ $cycle->mentee_signups_end_at->format('d.m.Y') }}</td>
+                <td>{{ $cycle->starts_at->format('d.m.Y') }} - {{ $cycle->ends_at->format('d.m.Y') }}</td>
                 @can('update', $cycle)
                 <td><a class="btn btn-primary" href="{{ route('cycle.edit', $cycle->id) }}">edit</button></td>
                 @endcan
