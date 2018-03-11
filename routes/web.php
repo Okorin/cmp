@@ -18,16 +18,46 @@ Route::get('/', function () {
 Route::get('/register', function () {
 	return view('register');
 });
+
+// Laravel's Auth route scaffolding
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/role/{id}', 'RoleController@show')->name('role.view');
-Route::get('/roles', 'RoleController@index')->name('role.index');
-Route::get('/roles/create', 'RoleController@showCreationForm')->name('role.creationform');
-Route::post('/roles/create', 'RoleController@create')->name('role.create');
-Route::get('/roles/update/{id}', 'RoleController@showUpdateForm')->name('role.updateform');
-Route::post('/roles/update/{id}', 'RoleController@update')->name('role.update');
-Route::post('/roles/delete/{id}', 'RoleController@delete')->name('role.delete');
-Route::get('/user', function () {
-    return view('user.show');
+
+// Role ressource
+Route::name('role.')->group(function () {
+    
+    // show
+	Route::get('/role/{id}',           'RoleController@show')  ->name('view');
+	Route::get('/roles',               'RoleController@index') ->name('index');
+
+    // manage view
+	Route::get('/roles/create',        'RoleController@create')->name('creationform');
+    Route::get('/roles/update/{id}',   'RoleController@edit')  ->name('edit');
+
+    // manage edit
+	Route::post('/roles/create',       'RoleController@store') ->name('create');
+	Route::post('/roles/update/{id}',  'RoleController@update')->name('update');
+	Route::post('/roles/delete/{id}',  'RoleController@delete')->name('delete');
+});
+
+// Cycle ressource: do not implement destroy methods, destroying the past makes no sense
+Route::name('cycle.')->group(function() {
+	
+    // show
+    Route::get('/cycles',              'CycleController@index') ->name('index');
+    Route::get('/cycle/{id}',          'CycleController@show')  ->name('show');
+
+    // manage view
+    Route::get('/cycles/create',       'CycleController@create')->name('create');
+    Route::get('/cycles/update/{id}',  'CycleController@edit')  ->name('edit');
+
+    // manage edit
+    Route::post('/cycles/update/{id}', 'CycleController@update')->name('update');
+    Route::post('/cycles/create',      'CycleController@store') ->name('store');
+});
+
+
+Route::name('user.')->group(function() {
+    Route::get('/user/{id}',            'UserController@show')->name('show');
 });

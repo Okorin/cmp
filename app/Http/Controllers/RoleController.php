@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use Validator;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
@@ -26,13 +28,13 @@ class RoleController extends Controller
 									]);
 	}
 
-	public function showCreationForm() 
+	public function create() 
 	{
 		$this->authorize('create', Role::class);
 		return view('role.create');
 	}
 
-	public function create(Request $request) 
+	public function store(Request $request) 
 	{
 		$this->authorize('create', Role::class);
 		$request->validate([
@@ -55,12 +57,29 @@ class RoleController extends Controller
 	{
 		$role = Role::findOrFail($id);
 		$this->authorize('update', $role);
-		$request->validate([
-			'name' => 'required',
-			'description' => 'required',
-			'color' => 'required|max:6',
-			'hierarchy' => 'required',
+		$validator = Validator::make($request->all(), [
+			'name' => [
+				'required',
+				Rule::unique('roles')->ignore($role->id),
+			],
+			'description' => [
+				'required',
+			],
+			'color' => [
+				'required',
+				'max:6',
+			],
+			'hierarchy' => [
+				'required',
+				'numeric',
+				Rule::unique('roles')->ignore($role->id),
+			],
 		]);
+		if ($validator->fails()) {
+			return back()->withErrors($validator)
+						 ->withInput();
+		}
+
 		$role->name         = e($request->name);
 		$role->description  = e($request->description);
 		$role->color 		= e($request->color);
@@ -70,7 +89,7 @@ class RoleController extends Controller
 	}
 
 // Returns the update form
-	public function showUpdateForm($id) 
+	public function edit($id) 
 	{
 		$role = Role::findOrFail($id);
 		$this->authorize('update', $role);

@@ -17,7 +17,7 @@ class RolePolicy
      * @param  \App\Role  $role
      * @return mixed
      */
-    public function before($user, $ability) 
+    public function before(User $user, $ability) 
     {
         if($user->isAdmin()) {
             return true;
@@ -38,7 +38,6 @@ class RolePolicy
     public function create(User $user)
     {
         return $user->isOrganizer() ? true : false;
-
     }
 
     /**

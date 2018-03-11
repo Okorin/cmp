@@ -8,7 +8,7 @@
 	<div class="row">
 	@foreach($users as $user)
 		<div class="col">
-			<a href="" style="color:#{{ $user->getColor() }};">
+			<a href="{{	route('user.show', $user->id) }}" style="color:#{{ $user->getColor() }};">
 				{{ $user->name }}
 			</a>
 		</div>
