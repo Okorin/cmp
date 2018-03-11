@@ -25,7 +25,7 @@
             class="table-success"
         @endif
             >
-                <td>{{ $cycle->id }}</td>
+                <td><a href="{{ route('cycle.show', $cycle->id) }}">{{ $cycle->id }}</a></td>
                 <td>{{ $cycle->name }}</td>
 		        <td>{{ $cycle->mentor_signups_start_at->format('d.m.Y') }} - {{ $cycle->mentor_signups_end_at->format('d.m.Y') }}</td>
 		        <td>{{ $cycle->mentee_signups_start_at->format('d.m.Y') }} - {{ $cycle->mentee_signups_end_at->format('d.m.Y') }}</td>

@@ -49,15 +49,26 @@ class CycleController extends Controller
         $this->doBasicFormCheck($request);
 
         // insert more validation of input data
+        DB::beginTransaction();
+        $active = false;
+        if ($request->active === 'yes') { 
 
+            Cycle::where('id', '<>', '0')->update(['active' => false]);
+            $active = true;
+
+        }
         $cycle = Cycle::create([
-            'starts_at' => e($request->cycleStart),
-            'ends_at' => e($request->cycleEnd),
+            'starts_at'               => e($request->cycleStart),
+            'ends_at'                 => e($request->cycleEnd),
             'mentor_signups_start_at' => e($request->mentorSignupsStart),
             'mentor_signups_end_at'   => e($request->mentorSignupsEnd),
             'mentee_signups_start_at' => e($request->menteeSignupsStart),
             'mentee_signups_end_at'   => e($request->menteeSignupsEnd),
+            'name'                    => e($request->cycleName),
+            'active'                  => $active,
         ]);
+
+        DB::commit();
 
         if ($cycle) 
         {
@@ -125,13 +136,13 @@ class CycleController extends Controller
 
         }
         // actually update the entry
-        $cycle->name = e($request->cycleName);
-        $cycle->mentor_signups_start_at = e($request->mentorSignupsStart);
-        $cycle->mentor_signups_end_at = e($request->mentorSignupsEnd);
-        $cycle->mentee_signups_start_at = e($request->menteeSignupsStart);
-        $cycle->mentee_signups_end_at = e($request->menteeSignupsEnd);
-        $cycle->starts_at = e($request->cycleStart);
-        $cycle->ends_at = e($request->cycleEnd);
+        $cycle->name =                      e($request->cycleName);
+        $cycle->mentor_signups_start_at =   e($request->mentorSignupsStart);
+        $cycle->mentor_signups_end_at =     e($request->mentorSignupsEnd);
+        $cycle->mentee_signups_start_at =   e($request->menteeSignupsStart);
+        $cycle->mentee_signups_end_at =     e($request->menteeSignupsEnd);
+        $cycle->starts_at =                 e($request->cycleStart);
+        $cycle->ends_at =                   e($request->cycleEnd);
 
         // save and go back
         $cycle->save();
@@ -160,6 +171,7 @@ class CycleController extends Controller
             'menteeSignupsEnd' => 'required|date_format:Y-m-d',
             'cycleStart' => 'required|date_format:Y-m-d',
             'cycleEnd' => 'required|date_format:Y-m-d',
+            'cycleName'  => 'max:25',
         ]);
     }
 

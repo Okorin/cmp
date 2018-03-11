@@ -9,6 +9,19 @@
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-2 text-right align-middle">
+                Name
+            </div>
+
+            <div class="col-md-8 form-inline mb-2 mr-sm-2">
+                <label class="sr-only" for="cycleName">Name</label>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="cycleName" id="cycleName" placeholder="name of the cycle">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 text-right align-middle">
                 Mentor Signups
             </div>
 
@@ -79,8 +92,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-5">
-                <button type="submit" class="btn btn-primary">Create</button>
+            <div class="col-md-2 text-right">
+                <input class="form-check-input" type="checkbox" id="active" name="active" value="yes">
+                <label class="form-check-label" for="active">
+                    active
+                </label>
+            </div>
+            <div class="col-md-8">
+                <button type="submit" class="btn btn-primary">create</button>
             </div>
         </div>
     </form>

@@ -107,9 +107,6 @@
                 <button type="submit" class="btn btn-primary">modify</button>
             </div>
         </div>
-        <div class="row">
-
-        </div>
     </form>
     <br />
     @include('layouts.error')
