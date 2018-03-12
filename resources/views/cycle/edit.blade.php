@@ -1,14 +1,16 @@
 @extends('layouts.master')
 
 @section('title', 'Edit Cycle ' . $cycle->id)
-    <style>
-	.border-bottom {
-        border-bottom: 2px solid #e9ecef !important;
-    }
+    @section('custom-css')
+	    <style>
+	    .border-bottom {
+            border-bottom: 2px solid #e9ecef !important;
+        }
 		.border-top {
-        border-top: 2px solid #e9ecef !important;
-    }
-	</style>
+            border-top: 2px solid #e9ecef !important;
+        }
+    	</style>
+	@endsection
 @section('content')
 	<div class="w-100 d-inline-flex p-3 border-bottom" style="justify-content:center"><h1>Edit Cycle {{ $cycle->id }}</h1></div>
         <form action="{{ route('cycle.update', $cycle->id) }}" method="post" >

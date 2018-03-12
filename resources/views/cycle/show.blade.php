@@ -1,11 +1,13 @@
 @extends('layouts.master')
 
 @section('title', 'Cycle ' . $cycle->id)
-    <style>
-	.border-right {
-        border-right: 2px solid #e9ecef !important;
-    }
-	</style>
+    @section('custom-css')
+	    <style>
+	    .border-right {
+            border-right: 2px solid #e9ecef !important;
+        }
+    	</style>
+	@endsection
 @section('content')
 	<div class="row justify-content-center">
 	    <div class="d-inline-flex p-3">

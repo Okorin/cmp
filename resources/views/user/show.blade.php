@@ -1,14 +1,16 @@
 @extends('layouts.master')
 
 @section('title', $user->name . '\'s userpage')
-    <style>
-	.border-right {
-        border-right:1px solid #e9ecef !important;
-    };
-	<!--.roleDropdown {
-		background-image:"/open-iconic-master/svg/plus.svg" !important;
-	}-->
-	</style>
+    @section('custom-css')
+	    <style>
+	    .border-right {
+            border-right:1px solid #e9ecef !important;
+        };
+	    <!--.roleDropdown {
+		    background-image:"/open-iconic-master/svg/plus.svg" !important;
+	    }-->
+	    </style>
+	@endsection
 @section('content')
     <div class="row" style="">
 		<div class="col-5 border-right border-primary user_display" style="">
