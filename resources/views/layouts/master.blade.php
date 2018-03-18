@@ -2,6 +2,8 @@
 <html lang="{{ App::getLocale() }}">
   <head>
     @include('layouts.css')
+	
+	@yield('costum-css')
 
     <title>@yield('title', 'home') &middot; osu!cmp</title>
   </head>
