@@ -22,6 +22,11 @@ Route::get('/register', function () {
 // Laravel's Auth route scaffolding
 Auth::routes();
 
+Route::name('login.')->group(function() {
+    Route::get('discord', 'Auth\LoginController@redirectToProvider')->name('discord');
+    Route::get('discord/callback', 'Auth\LoginController@handleProviderCallback')->name('discord.callback');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Role ressource
