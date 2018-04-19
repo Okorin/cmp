@@ -66,3 +66,10 @@ Route::name('cycle.')->group(function() {
 Route::name('user.')->group(function() {
     Route::get('/user/{id}',            'UserController@show')->name('show');
 });
+
+
+Route::name('node.')->group( function() {
+    Route::post('/node/requestToken',   'NodeController@requestTokenForUser')->name('request');
+    Route::post('/node/callback',       'NodeController@handleNodeCallback')->name('callback');
+
+});
