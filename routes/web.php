@@ -22,6 +22,9 @@ Route::get('/register', function () {
 // Laravel's Auth route scaffolding
 Auth::routes();
 
+Route::get('/login_osu', 'osuAuthController@redirectToProvider');
+Route::get('/callback', 'osuAuthController@handleProviderCallback');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Role ressource

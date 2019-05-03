@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'osu' => [
+        'client_id' => env('OSU_CLIENT_ID'),
+        'client_secret' => env('OSU_CLIENT_SECRET'),
+        'redirect' => env('OSU_REDIRECT'),
+    ],
+
 ];
