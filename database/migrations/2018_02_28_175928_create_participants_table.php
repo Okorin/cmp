@@ -27,7 +27,7 @@ class CreateParticipantsTable extends Migration
             $table->foreign('role_id')    ->references('id')
                                           ->on('roles');
             $table->foreign('gamemode_id')->references('id')
-                                          ->on('roles');
+                                          ->on('gamemodes');
             $table->foreign('cycle_id')   ->references('id')
                                           ->on('cycles');
 

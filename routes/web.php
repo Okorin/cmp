@@ -19,10 +19,13 @@ Route::get('/register', function () {
 	return view('register');
 });
 
-// Laravel's Auth route scaffolding
-Auth::routes();
-
-Route::get('/login_osu', 'osuAuthController@redirectToProvider');
+// Laravel's Auth route scaffolding gets ignored cause no one will have a password or anything else
+// cool fact is that restricted users shouldnt be able to use this cause public api doesnt exist
+// idk anyone restricted to test this with though but it ""should"" work
+//Auth::routes();
+// only login methods are bound to osu! -> no more
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/login', 'osuAuthController@redirectToProvider')->name('login');
 Route::get('/callback', 'osuAuthController@handleProviderCallback');
 
 Route::get('/home', 'HomeController@index')->name('home');
