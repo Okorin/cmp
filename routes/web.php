@@ -67,3 +67,17 @@ Route::name('cycle.')->group(function() {
 Route::name('user.')->group(function() {
     Route::get('/user/{id}',            'UserController@show')->name('show');
 });
+
+Route::name('checkup.')->group(function() {
+    Route::get('/checkups',                         'MenteeCheckupController@index')->name('index');
+    Route::get('/checkups/archive',                 'MenteeCheckupController@archive')->name('archive');
+    Route::get('/checkup/{menteeCheckup}',          'MenteeCheckupController@show')->name('show');
+    Route::get('/checkups/create',                  'MenteeCheckupController@create')->name('create');
+    Route::get('/checkup/update/{menteeCheckup}',   'MenteeCheckupController@edit')->name('edit');
+    Route::get('/checkup/review/{menteeCheckup}',   'MenteeCheckupController@editReview')->name('editReview');
+
+    Route::post('/checkups/create',                 'MenteeCheckupController@store')->name('store');
+    Route::post('/checkup/poke/{menteeCheckup}',    'MenteeCheckupController@poke')->name('poke');
+    Route::post('/checkup/update/{menteeCheckup}',  'MenteeCheckupController@update')->name('update');
+    Route::post('/checkup/review/{menteeCheckup}',  'MenteeCheckupController@review')->name('review');
+});

@@ -29,6 +29,9 @@
                 @can('create', App\Cycle::class)
                 <a class="dropdown-item" href="{{ route('cycle.create') }}">new cycle</a>
                 @endcan
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ route('checkup.index') }}">checkups</a>
+                <a class="dropdown-item" href="{{ route('checkup.archive') }}">checkups archive</a>
               </div>
             </li>
             @endif
