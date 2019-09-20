@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cycle;
+use App\Events\MenteeCheckupResponded;
 use App\MenteeCheckup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -167,6 +168,12 @@ class MenteeCheckupController extends Controller
             'progress_comment' => 'required|max:1500',
             'extra_comment' => 'nullable|max:1500',
         ]);
+
+        $shouldFireEvent = true;
+
+        if (isset($menteeCheckup->filled_at)) {
+            $shouldFireEvent = false;
+        }
         
         $menteeCheckup->status_comment = e($request->status_comment);
         $menteeCheckup->frequency_comment = e($request->frequency_comment);
@@ -176,13 +183,22 @@ class MenteeCheckupController extends Controller
 
         if (Auth::user()->isOrganizer()) {
             $menteeCheckup->checkup_type = 'manual';
+            $shouldFireEvent = false;
         } else {
             $menteeCheckup->checkup_type = 'response';
         }
 
         $menteeCheckup->save();
 
-        return redirect()->route('checkup.index');
+        if ($shouldFireEvent) {
+            event(new MenteeCheckupResponded($menteeCheckup));
+        }
+
+        if (Auth::user()->isOrganizer()) {
+            return redirect()->route('checkup.index');
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
