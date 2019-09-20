@@ -25,7 +25,7 @@
         {{ csrf_field() }}
         <div class="form-group">
             <label for="checkup_frequency_rate">Checkups frequency, if necessary</label>
-            <select class="form-control" id="checkup_frequency_rate" name="checkup_frequency_rate">
+            <select class="custom-select" id="checkup_frequency_rate" name="checkup_frequency_rate">
                 <option value="regular" {{ $menteeCheckup->participant->checkup_frequency_rate == 'regular' ? 'selected' : '' }}>Regular</option>
                 <option value="frequent" {{ $menteeCheckup->participant->checkup_frequency_rate == 'frequent' ? 'selected' : '' }}>Frequent</option>
             </select>

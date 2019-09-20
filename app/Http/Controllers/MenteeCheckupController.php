@@ -11,11 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class MenteeCheckupController extends Controller
 {
     public function __construct() {
-        // remember to remove this
-        Auth::onceUsingId(4);
-
         $this->middleware('auth');
-        $this->middleware('organizer')->except(['update', 'edit']);
     }
 
     /**
@@ -25,6 +21,8 @@ class MenteeCheckupController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', MenteeCheckup::class);
+
         $currentCycle = Cycle::active()->first();
 
         if (isset($currentCycle)) {
@@ -33,13 +31,13 @@ class MenteeCheckupController extends Controller
             })->with([
                 'participant.mentee:id,name',
                 'participant.mentor:id,name', 
-                'supervisor:id,name',
+                'reviewer:id,name',
             ])->get();
 
             $menteeCheckups = $menteeCheckups->mapToGroups(function ($checkup) {
                 if (!isset($checkup['filled_at'])) {
                     return ['notFilled' => $checkup];
-                } elseif (!isset($checkup['supervisor_id'])) {
+                } elseif (!isset($checkup['reviewer_id'])) {
                     return ['notReviewed' => $checkup];
                 } else {
                     return ['reviewed' => $checkup];
@@ -57,6 +55,8 @@ class MenteeCheckupController extends Controller
      */
     public function archive()
     {
+        $this->authorize('viewAny', MenteeCheckup::class);
+
         $cycles = Cycle::orderBy('starts_at', 'desc')->get(['id', 'name', 'starts_at']);
 
         $archiveMenteeCheckups = MenteeCheckup::whereHas('participant', function ($query) use($cycles) {
@@ -64,20 +64,10 @@ class MenteeCheckupController extends Controller
         })->with([
             'participant.mentee:id,name',
             'participant.mentor:id,name', 
-            'supervisor:id,name',
+            'reviewer:id,name',
         ])->get();
 
         return view('checkup.archive', compact('archiveMenteeCheckups', 'cycles'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -88,6 +78,8 @@ class MenteeCheckupController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', MenteeCheckup::class);
+
         $request->validate([
             'only_frequents' => 'sometimes|accepted',
         ]);
@@ -121,10 +113,12 @@ class MenteeCheckupController extends Controller
      */
     public function show(MenteeCheckup $menteeCheckup)
     {
+        $this->authorize('view', $menteeCheckup);
+
         $menteeCheckup->load([
             'participant.mentee:id,name',
             'participant.mentor:id,name',
-            'supervisor:id,name',
+            'reviewer:id,name',
         ]);
 
         return view('checkup.show', compact('menteeCheckup'));
@@ -151,6 +145,8 @@ class MenteeCheckupController extends Controller
      */
     public function editReview(MenteeCheckup $menteeCheckup)
     {
+        $this->authorize('manage', $menteeCheckup);
+
         return view('checkup.editReview', compact('menteeCheckup'));
     }
 
@@ -198,12 +194,14 @@ class MenteeCheckupController extends Controller
      */
     public function review(Request $request, MenteeCheckup $menteeCheckup)
     {
+        $this->authorize('manage', $menteeCheckup);
+
         $request->validate([
             'checkup_frequency_rate' => 'required|in:regular,frequent',
             'potential_problems' => 'nullable|max:1500',
         ]);
 
-        $menteeCheckup->supervisor_id = Auth::id();
+        $menteeCheckup->reviewer_id = Auth::id();
         $menteeCheckup->participant()->update(['checkup_frequency_rate' => $request->checkup_frequency_rate]);
         $menteeCheckup->potential_problems = e($request->potential_problems);
 
@@ -222,20 +220,11 @@ class MenteeCheckupController extends Controller
      */
     public function poke(Request $request, MenteeCheckup $menteeCheckup)
     {
+        $this->authorize('manage', $menteeCheckup);
+
         $menteeCheckup->poked_at = Carbon::now();
         $menteeCheckup->save();
 
         return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\MenteeCheckup  $menteeCheckup
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(MenteeCheckup $menteeCheckup)
-    {
-        //
     }
 }

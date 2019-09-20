@@ -30,8 +30,8 @@ class CreateMenteeCheckupsTable extends Migration
             $table->string('progress_comment', 1500)->nullable();
             $table->string('extra_comment', 1500)->nullable();
 
-            $table->unsignedInteger('supervisor_id')->nullable();
-            $table->foreign('supervisor_id')
+            $table->unsignedInteger('reviewer_id')->nullable();
+            $table->foreign('reviewer_id')
                 ->references('id')
                 ->on('users');
 

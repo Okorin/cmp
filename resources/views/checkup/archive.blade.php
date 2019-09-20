@@ -39,7 +39,7 @@
             <tbody>
                 @foreach ($archiveMenteeCheckups as $checkup)
                     <tr>
-                        <td>{{ $checkup->supervisor->name ?? 'Unchecked' }}</td>
+                        <td>{{ $checkup->reviewer->name ?? 'Unchecked' }}</td>
                         <td>{{ $checkup->checkup_type }}</td>
                         <td>{{ $checkup->participant->mentee->name }}</td>
                         <td>{{ $checkup->participant->mentor->name }}</td>

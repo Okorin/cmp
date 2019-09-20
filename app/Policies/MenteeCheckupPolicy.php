@@ -19,6 +19,18 @@ class MenteeCheckupPolicy
     }
 
     /**
+     * Determine whether the user can view the listing of menteeCheckup.
+     *
+     * @param  \App\User  $user
+     * @param  \App\MenteeCheckup  $menteeCheckup
+     * @return mixed
+     */
+    public function viewAny(User $user)
+    {
+        return $user->isOrganizer();
+    }
+
+    /**
      * Determine whether the user can view the menteeCheckup.
      *
      * @param  \App\User  $user
@@ -27,7 +39,7 @@ class MenteeCheckupPolicy
      */
     public function view(User $user, MenteeCheckup $menteeCheckup)
     {
-        //
+        return $user->isOrganizer();
     }
 
     /**
@@ -38,11 +50,11 @@ class MenteeCheckupPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isOrganizer();
     }
 
     /**
-     * Determine whether the user can update the menteeCheckup.
+     * Determine whether the user can update the menteeCheckup, only when it's theirs and hasn't been reviewed.
      *
      * @param  \App\User  $user
      * @param  \App\MenteeCheckup  $menteeCheckup
@@ -50,7 +62,21 @@ class MenteeCheckupPolicy
      */
     public function update(User $user, MenteeCheckup $menteeCheckup)
     {
-        return ($menteeCheckup->participant->mentee_id === $user->id || $user->isOrganizer());
+        return 
+            ($menteeCheckup->participant->mentee_id === $user->id && !isset($menteeCheckup->reviewer_id)) 
+            || $user->isOrganizer();
+    }
+
+    /**
+     * Determine whether the user can review/poke the menteeCheckup.
+     *
+     * @param  \App\User  $user
+     * @param  \App\MenteeCheckup  $menteeCheckup
+     * @return mixed
+     */
+    public function manage(User $user, MenteeCheckup $menteeCheckup)
+    {
+        return $user->isOrganizer();
     }
 
     /**
@@ -62,6 +88,6 @@ class MenteeCheckupPolicy
      */
     public function delete(User $user, MenteeCheckup $menteeCheckup)
     {
-        //
+        return $user->isOrganizer();        
     }
 }

@@ -4,22 +4,26 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-sm-6">
-            <h4>Cycle #{{ $currentCycle->id }} {{ $currentCycle->name }}</h4>
-            <div class="text-muted">(Started {{ $currentCycle->starts_at->toDateString() }})</div>
+    @isset($currentCycle)
+        <div class="row">
+            <div class="col-sm-6">
+                <h4>Cycle #{{ $currentCycle->id }} {{ $currentCycle->name }}</h4>
+                <div class="text-muted">(Started {{ $currentCycle->starts_at->toDateString() }})</div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <form class="form-inline" action="{{ route('checkup.store') }}" method="post">
+                    {{ csrf_field() }}
+                    <div class="custom-control custom-checkbox ml-auto">
+                        <input class="custom-control-input" type="checkbox" name="only_frequents" id="only_frequents">
+                        <label class="custom-control-label" for="only_frequents" value="0">Only frequents?</label>
+                    </div>
+                    <button class="btn btn-outline-success ml-2">Create batch</button>
+                </form>
+            </div>
         </div>
-        <div class="col-sm-6 text-right">
-            <form class="form-inline" action="{{ route('checkup.create') }}" method="post">
-                {{ csrf_field() }}
-                <div class="custom-control custom-checkbox ml-auto">
-                    <input class="custom-control-input" type="checkbox" name="only_frequents" id="only_frequents">
-                    <label class="custom-control-label" for="only_frequents" value="0">For frequents?</label>
-                </div>
-                <button class="btn btn-outline-success ml-2">Create batch</button>
-            </form>
-        </div>
-    </div>
+    @else
+        <h4>No active cycle</h4>
+    @endisset
 
     @isset($menteeCheckups['notFilled'])
         <hr>
@@ -105,7 +109,7 @@
             <tbody>
                 @foreach ($menteeCheckups['reviewed'] as $checkup)
                     <tr>
-                        <td>{{ $checkup->supervisor->name }}</td>
+                        <td>{{ $checkup->reviewer->name }}</td>
                         <td>{{ $checkup->checkup_type }}</td>
                         <td>{{ $checkup->participant->mentee->name }}</td>
                         <td>{{ $checkup->participant->mentor->name }}</td>

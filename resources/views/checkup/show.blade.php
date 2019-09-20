@@ -7,8 +7,8 @@
     <div class="row">
         <div class="col-sm-6">
             <h5>Mentee: <span class="text-dark">{{ $menteeCheckup->participant->mentee->name }}</span></h5>
-            @isset($menteeCheckup->supervisor)
-                <h5>Checked by: <span class="text-dark">{{ $menteeCheckup->supervisor->name }}</span></h5>
+            @isset($menteeCheckup->reviewer)
+                <h5>Checked by: <span class="text-dark">{{ $menteeCheckup->reviewer->name }}</span></h5>
             @endisset
         </div>
         <div class="col-sm-6">

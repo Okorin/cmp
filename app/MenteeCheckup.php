@@ -19,7 +19,7 @@ class MenteeCheckup extends Model
         return $this->belongsTo(Participant::class);
     }
 
-    public function supervisor()
+    public function reviewer()
     {
         return $this->belongsTo(User::class);
     }
