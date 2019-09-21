@@ -6,32 +6,11 @@
           <div class="col-md-4">
             <div class="container-fluid">
               @if( Auth::guest() )
-              <form action="{{ route('login') }}" method='POST'>
-                {{ csrf_field() }}
                 <div class="row form-group align-items-center h-100 mb-0">
                     <div class="col">
-                      <input type="text" class="form-control" name="name" placeholder="Username" />
-                    </div>
-                    <div class="col">
-                      <input type="password" class="form-control" name="password" placeholder="Password" />
-                    </div>
-                    <div class="col">
-                      <button type="submit" class="btn btn-primary">Sign in</button>
+                      <a class="float-right btn btn-primary" href="{{ route('login') }}">Sign in</a>
                     </div>
                   </div>
-                  <div class="row">
-                  <div class="col">
-                      <span class="text-secondary">Don't have an account?</span> <a href="{{ url('/register') }}">Sign up</a>
-                  </div>
-                  @if (false !== isset($errors) )
-                  @foreach ($errors->all() as $error)
-                      <span class="help-block">
-                          <strong>{{ $error }}</strong>
-                      </span>
-                  @endforeach
-                  @endif
-                </div>
-              </form>
               @else
                 <div class="row form-group align-items-center h-100 mb-0">
                   <div class="col">

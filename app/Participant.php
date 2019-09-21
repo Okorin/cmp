@@ -8,7 +8,11 @@ class Participant extends Model
 {
     //
 
-    public function user() {
+    public function mentor() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function mentee() {
         return $this->belongsTo(User::class);
     }
 
@@ -18,10 +22,6 @@ class Participant extends Model
 
     public function gamemode($id) {
         return $this->belongsTo(Gamemode::class)->modeAsc($id);
-    }
-
-    public function role() {
-        return $this->belongsTo(Role::class);
     }
 
     public function scopeModeAsc($query, $mode) 

@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name', 
         'email', 
         'password',
+        'osu_user_id',
     ];
 
     /**
@@ -43,14 +44,33 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    public function participants() {
-        return $this->hasMany(Participant::class);
+    // Participant table was changed to reflect only mentor / mentee relationships
+    /**
+     * A user can be mentor to multiple people in the participants table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mentors() {
+        return $this->hasMany(Participant::class, 'mentor_id');
+    }
+
+    /**
+     * A user can be mentee to multiple people in the participants table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mentees() {
+        return $this->hasMany(Participant::class, 'mentee_id');
     }
 
     /**
      * Gets the gets the highest relevant hierarchy for a user
      */
     public function scopeHighestRole() {
+        return $this->queryHighestRole();
+    }
+
+    protected function queryHighestRole() {
         return $this->roles()->orderBy('hierarchy')->first();
     }
 
@@ -64,7 +84,7 @@ class User extends Authenticatable
         { 
             return $this->color_override;
         }  else {
-            if ($this->highestRole()) {
+            if ($this->queryHighestRole()) {
                 return $this->highestRole()->color;
             } else { 
                 return User::DEFAULT_COLOR; 
