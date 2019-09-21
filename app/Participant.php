@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Participant extends Model
 {
-    //
+    protected $fillable = [
+        'checkup_frequency_rate',
+    ];
 
     public function mentor() {
         return $this->belongsTo(User::class);

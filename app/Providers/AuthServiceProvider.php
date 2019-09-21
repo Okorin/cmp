@@ -7,7 +7,9 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use App\Role;
 use App\Policies\RolePolicy;
 use App\Cycle;
+use App\MenteeCheckup;
 use App\Policies\CyclePolicy;
+use App\Policies\MenteeCheckupPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\ModelPolicy',
         Role::class => RolePolicy::class,
         Cycle::class => CyclePolicy::class,
+        MenteeCheckup::class => MenteeCheckupPolicy::class,
     ];
 
     /**

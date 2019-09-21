@@ -31,5 +31,13 @@ class Cycle extends Model
         'name',
         'active',
     ];
+    
+    public function participants() {
+        return $this->hasMany(Participant::class);
+    }
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
 }
